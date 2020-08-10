@@ -39,7 +39,7 @@ export default class App extends Component<Props> {
     // taking img is stored in the state
     body.append('img', { uri: this.state.img.uri, name: 'img.jpg', type: 'image/jpeg' });
     //now img is appended
-    fetch('http://192.168.0.2/images/upload.php', {
+    fetch('http://192.168.0.5/29-07-20/api/credenciales', {
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'

@@ -14,13 +14,15 @@ export default App = () => {
   }, []);
 
   return (
-    <View style={{backgroundColor:'#abc123',padding:10,margin:10}}>
+    <View style={{backgroundColor:'black',padding:10,margin:10}}>
       {isLoading ? <ActivityIndicator/> : (
         <FlatList
           data={data}
           keyExtractor={({ id }, index) => id}
           renderItem={({ item }) => (
-          <Text style={{color:'#fff', fontWeight:'bold'}}>{item.nombres} {item.ape_pat} {item.ape_mat}</Text>
+          <Text style={{color:'#fff', fontWeight:'bold'}}>Nombres: {item.nombres} Apellidos: {item.ape_pat} {item.ape_mat} 
+           Fecha Nacimiento: {item.fecha_nacimiento} Domicilio: {item.domicilio} Colonia: {item.colonia} CP: {item.cp} Estado: {item.estado} Municipio: {item.municipio} Localidad: {item.localidad} 
+          Clave elector: {item.clave_elector} Curp: {item.curp}  </Text>
             
           )}
         />
