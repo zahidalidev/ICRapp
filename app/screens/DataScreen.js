@@ -1,45 +1,33 @@
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Text, View, StyleSheet } from 'react-native';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,FlatList} from 'react-native';
-export default class App extends Component {
+export default App = () => {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
 
-  state ={
-    data:['users']
-  }
+  useEffect(() => {
+    fetch('http://192.168.0.5/29-07-20/api/credenciales')
+      .then((response) => response.json())
+      .then((json) => setData(json.credenciales))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
 
-  fetchData= async()=>{
-    const response = await fetch('http://192.168.0.5/29-07-20/api/users');
-    const users = await response.status;
-    //console.log(users);
-    this.State({data: users.users});
-
-  }
-  
- async componentDidMount(){
-  await this.fetchData();
-}
-  render() {
-    return (
-      <View >
-       <Text>Informacion Recolectada</Text>
-
-       <FlatList
-       data={this.state.data}
-       keyExtractor={(item,index) => index.toString()}
-       renderItem={({item}) =>
-
-       <View style={{backgroundColor:'#abc123',padding:10,margin:10}}>
-          <Text style={{color:'#fff', fontWeight:'bold'}}>{item.email}</Text>
-          <Text style={{color:'#fff'}}>{item.username}</Text>
-         </View>
-
-       }
-
-       />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={{backgroundColor:'#abc123',padding:10,margin:10}}>
+      {isLoading ? <ActivityIndicator/> : (
+        <FlatList
+          data={data}
+          keyExtractor={({ id }, index) => id}
+          renderItem={({ item }) => (
+          <Text style={{color:'#fff', fontWeight:'bold'}}>{item.nombres} {item.ape_pat} {item.ape_mat}</Text>
+            
+          )}
+        />
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
