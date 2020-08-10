@@ -32,7 +32,7 @@ export default function LoginScreen(props){
             secureTextEntry={true}
             onPress={() => setHidePassword(!hidePassword)}/>
             <View style={mainStyles.btnMain}>
-                <TouchableOpacity onPress={() => goToScreen(props, 'Data')}>
+                <TouchableOpacity onPress={() => goToScreen(props, 'First')}>
                     <Text style={mainStyles.btntxt}>Iniciar Sesion</Text>
                 </TouchableOpacity>
             </View>

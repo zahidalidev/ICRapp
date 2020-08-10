@@ -26,7 +26,7 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
   state = {
-    img: require('@recursos/images/ine.png'),
+    img: require('@recursos/images/scan.png'),
     show: false
   }
   async capture() {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   img: {
     width: 300,
     height: 300,
-    borderRadius: 150
+    borderRadius: 50
   },
   capture: {
     width: 60,
