@@ -6,12 +6,14 @@ export default App = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    consol.log("dataScreen")
     fetch('http://192.168.0.5/29-07-20/api/credenciales')
       .then((response) => response.json())
       .then((json) => setData(json.credenciales))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
+
 
   return (
     <View style={{backgroundColor:'black',padding:10,margin:10}}>

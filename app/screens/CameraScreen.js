@@ -11,7 +11,7 @@ import {Platform, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions} f
 import { RNCamera } from 'react-native-camera';
 import { mainStyles, loginStyles } from '@styles/styles'
 import color from '@styles/colors'
-
+import axios from 'axios';
 
 
 const { width } = Dimensions.get('screen');
@@ -27,19 +27,69 @@ type Props = {};
 export default class App extends Component<Props> {
   state = {
     img: require('@recursos/images/scan.png'),
-    show: false
+    show: false,
+    captureImage: "https://faculty.weber.edu/tmathews/grammar/Rulfo.JPG"    //scanning this imaage
   }
-  async capture() {
+
+    processImage = async(captureImage)  => {      
+        var uriBase = "https://apirestocr.cognitiveservices.azure.com/" + "vision/v3.0/ocr";  //endpoint
+        // Request parameters.
+        var params = {
+            "language": "unk",
+            "detectOrientation": "true",
+        };
+
+        try {
+          console.log("calling api...")
+          const options = {
+            method: 'POST',
+            headers: { 
+              'content-type': 'application/json', 
+             "Ocp-Apim-Subscription-Key": "00f21e52b1df40f5aa0d3185dac5f517" //subscription key
+            },
+            data: '{"url": ' + '"' + captureImage + '"}',
+            url: uriBase + "?" + params,
+          };
+          const {data} = await axios(options);  //calling api using axios
+          return data;  //returning responce
+        } catch (error) {
+          console.log("error: ", error)
+        }
+       
+    };
+
+    extractWordArray = async() => {
+      const data = await this.processImage(this.state.captureImage);    //responce from the scanned image
+
+      //extracting word from responce
+      const textArray = [];
+      data.regions.map(region => {
+        region.lines.map(line => {
+            line.words.map(word => {
+                textArray.push(word.text);
+            })
+        })
+        this.setState({extractedWordsArray: textArray});
+      })
+
+      console.log("wordsArray: ", textArray)      //result from the scanned image
+    }
+
+  capture = async() => {
     const img = await this.refs.cam.takePictureAsync({ quality: 0.5 });
     this.setState({ img, show: false })
+    console.log("img Data", img)
   }
-  upload() {
+
+  upload = async() => {
+    await this.extractWordArray();    //Extracting Printed Text (OCR) Using the Computer Vision REST API and JavaScript
+
     // now i just create the form data
     const body = new FormData();
     // taking img is stored in the state
     body.append('img', { uri: this.state.img.uri, name: 'img.jpg', type: 'image/jpeg' });
     //now img is appended
-    fetch('http://192.168.0.5/29-07-20/api/credenciales', {
+    fetch('http://localhost:3000/credenciales', {
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -47,6 +97,7 @@ export default class App extends Component<Props> {
       body
     }).then(a => a.json()).then(res => alert(res));
   }
+
   render() {
     return this.state.show ?
     <View style={styles.container}>

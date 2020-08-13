@@ -18,6 +18,7 @@ const app = express();
 
 // Creating a GET route that returns data from the 'users' table.
 app.get('/credenciales', function (req, res) {
+    console.log("get")
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
 
