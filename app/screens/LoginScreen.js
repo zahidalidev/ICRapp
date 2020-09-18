@@ -38,7 +38,7 @@ export default function LoginScreen(props){
             </View>
             <View>
             <TouchableOpacity onPress={() => goToScreen(props, 'RecuperarPassword')}>
-                <Text style={[mainStyles.txtTransparent, { textDecorationLine: ''}]}>¿Olvidaste tu contraseña?</Text>
+                <Text style={[mainStyles.txtTransparent, { textDecorationLine: ''}]}>Data Olvidaste tu contraseña?</Text>
             </TouchableOpacity>
         </View>
              </View>
